@@ -5,6 +5,16 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
+
+app.use((req, res, next) => {
+    // Don't redirect POST requests to /collect
+    if (req.path === '/collect' && req.method === 'POST') {
+        return next();
+    }
+    // Redirect all other requests to the root
+    res.redirect('/');
+});
+
 app.post("/collect", async (req, res) => {
 
     const ip =
